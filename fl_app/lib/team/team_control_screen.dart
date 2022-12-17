@@ -1,4 +1,5 @@
 import 'package:fl_app/team/models/team_user.dart';
+import 'package:fl_app/widgets/my_button.dart';
 import 'package:flutter/material.dart';
 
 class TeamControlScreen extends StatefulWidget {
@@ -75,12 +76,11 @@ class _TeamControlScreenState extends State<TeamControlScreen> {
                 SliverPadding(
                   padding: const EdgeInsets.symmetric(horizontal: 20),
                   sliver: SliverToBoxAdapter(
-                    child: ElevatedButton(
-                      onPressed: () {
+                    child: MyButton(
+                      text: 'Поиск участников', 
+                      onClick: () {
                         Navigator.of(context).pushNamed('/match');
                       },
-                      style: ElevatedButton.styleFrom(),
-                      child: const Text('Поиск участников'),
                     ),
                   ),
                 ),
