@@ -1,4 +1,5 @@
 import 'package:fl_app/app_colors.dart';
+import 'package:fl_app/profile_screen.dart';
 import 'package:fl_app/splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:vk_bridge/vk_bridge.dart';
@@ -33,8 +34,15 @@ class App extends StatelessWidget {
     return MaterialApp(
       theme: ThemeData(
         primaryColor: AppColors.main,
+        appBarTheme: AppBarTheme(
+          backgroundColor: AppColors.main,
+        )
       ),
-      routes: {'/': (context) => const SplashScreen()},
+      initialRoute: '/profile',
+      routes: {
+        '/': (context) => const SplashScreen(),
+        '/profile': (context) => const ProfileScreen()
+      },
     );
   }
 }
