@@ -3,7 +3,7 @@ import 'package:flutter/cupertino.dart';
 class AppTextStyle {
   static const s38w500 = TextStyle(
     fontSize: 38,
-    fontWeight: FontWeight.w500,
+    fontWeight: FontWeight.w700,
   );
 
   static const s27w400 = TextStyle(
