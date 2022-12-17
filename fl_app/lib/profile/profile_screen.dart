@@ -1,3 +1,4 @@
+import 'package:fl_app/widgets/tag.dart';
 import 'package:flutter/material.dart';
 
 class ProfileScreen extends StatelessWidget {
@@ -73,25 +74,6 @@ class ProfileScreen extends StatelessWidget {
           ],
         ),
       ),
-    );
-  }
-}
-
-class Tag extends StatelessWidget {
-  final String name;
-
-  const Tag({super.key, required this.name});
-
-  @override
-  Widget build(BuildContext context) {
-    // TODO: implement build
-    return Container(
-      padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
-      decoration: BoxDecoration(
-        color: Colors.grey[400],
-        borderRadius: BorderRadius.circular(8),
-      ),
-      child: Text(name),
     );
   }
 }

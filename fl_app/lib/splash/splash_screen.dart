@@ -1,5 +1,5 @@
-import 'package:fl_app/app_colors.dart';
-import 'package:fl_app/app_text_style.dart';
+import 'package:fl_app/styles/app_colors.dart';
+import 'package:fl_app/styles/app_text_style.dart';
 import 'package:flutter/material.dart';
 
 class SplashScreen extends StatelessWidget {
