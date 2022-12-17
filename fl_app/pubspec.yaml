@@ -64,18 +64,18 @@ flutter:
   fonts:
     - family: Open-Sans
       fonts:
-        - asset: assets/fonts/opensans/OpenSans-Bold.ttf
-        - asset: assets/fonts/opensans/OpenSans-BoldItalic.ttf
-        - asset: assets/fonts/opensans/OpenSans-ExtraBold.ttf
-        - asset: assets/fonts/opensans/OpenSans-ExtraBoldItalic.ttf
-        - asset: assets/fonts/opensans/OpenSans-Italic.ttf
-        - asset: assets/fonts/opensans/OpenSans-Light.ttf
-        - asset: assets/fonts/opensans/OpenSans-LightItalic.ttf
-        - asset: assets/fonts/opensans/OpenSans-Medium.ttf
-        - asset: assets/fonts/opensans/OpenSans-MediumItalic.ttf
-        - asset: assets/fonts/opensans/OpenSans-Regular.ttf
-        - asset: assets/fonts/opensans/OpenSans-SemiBold.ttf
-        - asset: assets/fonts/opensans/OpenSans-SemiBoldItalic.ttf
+        - asset: assets/fonts/open-sans/OpenSans-Bold.ttf
+        - asset: assets/fonts/open-sans/OpenSans-BoldItalic.ttf
+        - asset: assets/fonts/open-sans/OpenSans-ExtraBold.ttf
+        - asset: assets/fonts/open-sans/OpenSans-ExtraBoldItalic.ttf
+        - asset: assets/fonts/open-sans/OpenSans-Italic.ttf
+        - asset: assets/fonts/open-sans/OpenSans-Light.ttf
+        - asset: assets/fonts/open-sans/OpenSans-LightItalic.ttf
+        - asset: assets/fonts/open-sans/OpenSans-Medium.ttf
+        - asset: assets/fonts/open-sans/OpenSans-MediumItalic.ttf
+        - asset: assets/fonts/open-sans/OpenSans-Regular.ttf
+        - asset: assets/fonts/open-sans/OpenSans-SemiBold.ttf
+        - asset: assets/fonts/open-sans/OpenSans-SemiBoldItalic.ttf
 
   # To add assets to your application, add an assets section, like this:
   # assets:

@@ -1,6 +1,5 @@
 import 'package:fl_app/app_colors.dart';
 import 'package:fl_app/app_text_style.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class SplashScreen extends StatelessWidget {
@@ -10,13 +9,13 @@ class SplashScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.main,
-      body: _buildBody(),
+      body: _buildBody(context),
     );
   }
 
-  Widget _buildBody() {
+  Widget _buildBody(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.all(20),
+      padding: const EdgeInsets.all(20),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
@@ -26,7 +25,7 @@ class SplashScreen extends StatelessWidget {
             Icons.swipe,
             color: Colors.white,
           ),
-          SizedBox(
+          const SizedBox(
             height: 20,
           ),
           _buildTitle(),
@@ -35,10 +34,24 @@ class SplashScreen extends StatelessWidget {
             height: 40,
           ),
           _buildAppName(),
-          SizedBox(
+          const SizedBox(
             height: 20,
           ),
           _buildAuthors(),
+          const SizedBox(
+            height: 20,
+          ),
+          ElevatedButton(
+            style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.blue,
+                padding: EdgeInsets.symmetric(
+                  vertical: 20,
+                )),
+            onPressed: () {
+              Navigator.of(context).pushNamed('/profile');
+            },
+            child: Text('Перейти'),
+          ),
           const Spacer(),
         ],
       ),
@@ -69,13 +82,6 @@ class SplashScreen extends StatelessWidget {
       ),
     );
   }
-
-  Widget _buildAuthor(String name) => Text(
-        name,
-        style: _defaultStyle(
-          const TextStyle(fontSize: 14, color: Colors.grey),
-        ),
-      );
 
   Widget _buildDate() {
     return Row(

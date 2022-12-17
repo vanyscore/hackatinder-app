@@ -1,4 +1,5 @@
 import 'package:fl_app/app_colors.dart';
+import 'package:fl_app/profile_screen.dart';
 import 'package:fl_app/splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:vk_bridge/vk_bridge.dart';
@@ -31,8 +32,18 @@ class App extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      theme: ThemeData(primaryColor: AppColors.main, fontFamily: 'Open-Sans'),
-      routes: {'/': (context) => const SplashScreen()},
+      theme: ThemeData(
+        primaryColor: AppColors.main,
+        appBarTheme: const AppBarTheme(
+          backgroundColor: AppColors.main,
+        ),
+        fontFamily: 'Open-Sans',
+      ),
+      initialRoute: '/',
+      routes: {
+        '/': (context) => const SplashScreen(),
+        '/profile': (context) => const ProfileScreen()
+      },
     );
   }
 }
