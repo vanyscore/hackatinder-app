@@ -1,8 +1,9 @@
 import 'package:fl_app/team/models/team_user.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class TeamControlScreen extends StatefulWidget {
+  const TeamControlScreen({super.key});
+
   @override
   State<StatefulWidget> createState() {
     return _TeamControlScreenState();
@@ -39,7 +40,7 @@ class _TeamControlScreenState extends State<TeamControlScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Управление командой'),
+        title: const Text('Управление командой'),
         centerTitle: true,
       ),
       body: Column(
@@ -48,7 +49,7 @@ class _TeamControlScreenState extends State<TeamControlScreen> {
             child: CustomScrollView(
               slivers: [
                 _buildVerticalMargin(20),
-                SliverToBoxAdapter(
+                const SliverToBoxAdapter(
                   child: Text(
                     'МММ "Рога и копыта"',
                     textAlign: TextAlign.center,
@@ -59,7 +60,7 @@ class _TeamControlScreenState extends State<TeamControlScreen> {
                   ),
                 ),
                 _buildVerticalMargin(10),
-                SliverToBoxAdapter(
+                const SliverToBoxAdapter(
                   child: Text(
                     'Команда топ. Можем запилить все что угодно. Антихайп. Обращайтесь к нам.',
                     textAlign: TextAlign.center,
@@ -72,14 +73,14 @@ class _TeamControlScreenState extends State<TeamControlScreen> {
                 _buildUsersList(),
                 _buildVerticalMargin(40),
                 SliverPadding(
-                  padding: EdgeInsets.symmetric(horizontal: 20),
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
                   sliver: SliverToBoxAdapter(
                     child: ElevatedButton(
                       onPressed: () {
                         Navigator.of(context).pushNamed('/match');
                       },
                       style: ElevatedButton.styleFrom(),
-                      child: Text('Поиск участников'),
+                      child: const Text('Поиск участников'),
                     ),
                   ),
                 ),
@@ -87,13 +88,13 @@ class _TeamControlScreenState extends State<TeamControlScreen> {
             ),
           ),
           Container(
-            padding: EdgeInsets.all(20),
+            padding: const EdgeInsets.all(20),
             child: ElevatedButton(
               onPressed: null,
               style: ElevatedButton.styleFrom(
-                fixedSize: Size.fromWidth(220),
+                fixedSize: const Size.fromWidth(220),
               ),
-              child: Text('Перейти в чат'),
+              child: const Text('Перейти в чат'),
             ),
           )
         ],
@@ -122,7 +123,7 @@ class _TeamControlScreenState extends State<TeamControlScreen> {
       return SliverToBoxAdapter(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
+          children: const [
             Icon(
               size: 40,
               Icons.people,

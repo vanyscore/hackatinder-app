@@ -47,11 +47,11 @@ class App extends StatelessWidget {
         ),
         fontFamily: 'Open-Sans',
       ),
-      initialRoute: '/team',
+      initialRoute: '/',
       routes: {
         '/': (context) => const SplashScreen(),
         '/profile': (context) => const ProfileScreen(),
-        '/events': (context) => EventsScreen(),
+        '/events': (context) => const EventsScreen(),
         '/match': (context) => const MatchScreen(),
         '/team': (context) => TeamControlScreen(),
       },

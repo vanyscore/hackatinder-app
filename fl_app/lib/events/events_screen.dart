@@ -1,12 +1,29 @@
 import 'package:dio/dio.dart';
+import 'package:fl_app/styles/app_colors.dart';
 import 'package:flutter/material.dart';
 
 class Event {
-  final name;
-  final date;
-  final imgUrl;
+  final String title;
+  final String description;
+  final String date;
+  final String photoUrl;
+  final String address;
 
-  Event(this.name, this.date, this.imgUrl);
+  Event({
+    required this.title,
+    required this.date,
+    required this.photoUrl,
+    required this.description,
+    required this.address,
+  });
+
+  factory Event.fromJson(Map<String, dynamic> json) => Event(
+        address: json['address'] as String,
+        date: json['date'] as String,
+        description: json['description'] as String,
+        photoUrl: json['photo_url'] as String,
+        title: json['title'] as String,
+      );
 }
 
 class EventsScreen extends StatefulWidget {
@@ -25,19 +42,31 @@ class EventsScreenState extends State<EventsScreen> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    Dio().get('https://baconipsum.com/api/?type=meat-and-filler').then(
-          (res) => {
-            setState(() {
-              // events = res.data;
-            })
-          },
-        );
+    Dio().get('http://10.11.167.53:8000/events/').then(
+      (res) {
+        List<dynamic> list = res.data;
+        final arr = list.map((e) => Event.fromJson(e)).toList();
+        setState(() {
+          events = arr;
+        });
+      },
+    ).catchError((err) {
+      print(err);
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
     return Scaffold(
+      floatingActionButton: FloatingActionButton(
+        onPressed: () => {},
+        backgroundColor: AppColors.main,
+        child: const Text(
+          '+',
+          style: TextStyle(fontSize: 28),
+        ),
+      ),
       appBar: AppBar(
         automaticallyImplyLeading: false,
         centerTitle: true,
@@ -57,11 +86,12 @@ class EventsScreenState extends State<EventsScreen> {
         ),
       ),
       body: Container(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 16),
         child: ListView(
           children: events
               .map(
-                (e) => EventCard(name: e.name, date: e.date, imgUrl: e.imgUrl),
+                (e) =>
+                    EventCard(name: e.title, date: e.date, imgUrl: e.photoUrl),
               )
               .toList(),
         ),
@@ -87,7 +117,7 @@ class EventCard extends StatelessWidget {
     // TODO: implement build
     return MaterialButton(
       onPressed: () {
-        print('clicked');
+        Navigator.of(context).pushNamed('/team');
       },
       child: Container(
         padding: const EdgeInsets.all(8),
@@ -95,15 +125,16 @@ class EventCard extends StatelessWidget {
           children: [
             CircleAvatar(
               backgroundImage: NetworkImage(imgUrl),
-              radius: 50,
+              radius: 30,
             ),
             const SizedBox(width: 16),
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
               children: [
                 Text(
                   name,
-                  style: const TextStyle(fontSize: 18),
+                  style: const TextStyle(fontSize: 16),
                 ),
                 const SizedBox(height: 10),
                 Text(date),
