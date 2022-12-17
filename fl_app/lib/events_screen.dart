@@ -1,4 +1,5 @@
 import 'dart:developer';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 
 class Event {
@@ -9,14 +10,27 @@ class Event {
   Event(this.name, this.date, this.imgUrl);
 }
 
-class EventsScreen extends StatelessWidget {
+class EventsScreen extends StatefulWidget {
+  @override
+  State<StatefulWidget> createState() {
+    return EventsScreenState();    
+  }
+}
 
-  final events = [
-    new Event("название ивента", "17 декабря - 19 декабря", "https://picsum.photos/400/200"),
-    new Event("название ивента", "17 декабря - 19 декабря", "https://picsum.photos/400/200"),
-  ];
+class EventsScreenState extends State<EventsScreen> {
 
-  EventsScreen({super.key});
+  List<Event> events = [];
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    Dio().get('https://baconipsum.com/api/?type=meat-and-filler').then((res) => {
+      setState(() {
+        // events = res.data;
+      })
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -54,7 +68,6 @@ class EventsScreen extends StatelessWidget {
       ),
     );
   }
-
 }
 
 class EventCard extends StatelessWidget {
@@ -75,7 +88,7 @@ class EventCard extends StatelessWidget {
     // TODO: implement build
     return MaterialButton(
       onPressed: () { 
-        log('btn clicked');
+        print('clicked');
       },
       child: Container(
         padding: EdgeInsets.all(8),
