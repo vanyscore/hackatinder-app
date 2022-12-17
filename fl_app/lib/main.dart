@@ -2,6 +2,7 @@ import 'package:fl_app/styles/app_colors.dart';
 import 'package:fl_app/matcher/match_screen.dart';
 import 'package:fl_app/profile/profile_screen.dart';
 import 'package:fl_app/splash/splash_screen.dart';
+import 'package:fl_app/events/events_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:vk_bridge/vk_bridge.dart';
 
@@ -40,10 +41,11 @@ class App extends StatelessWidget {
         ),
         fontFamily: 'Open-Sans',
       ),
-      initialRoute: '/match',
+      initialRoute: '/',
       routes: {
         '/': (context) => const SplashScreen(),
         '/profile': (context) => const ProfileScreen(),
+        '/events': (context) => EventsScreen(),
         '/match': (context) => const MatchScreen(),
       },
     );

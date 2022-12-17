@@ -43,14 +43,16 @@ class SplashScreen extends StatelessWidget {
           ),
           ElevatedButton(
             style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.blue,
-                padding: EdgeInsets.symmetric(
-                  vertical: 20,
-                )),
+              backgroundColor: Colors.blue,
+              padding: const EdgeInsets.symmetric(
+                vertical: 20,
+              ),
+            ),
             onPressed: () {
-              Navigator.of(context).pushNamed('/profile');
+              Navigator.of(context)
+                  .pushNamedAndRemoveUntil('/events', (route) => false);
             },
-            child: Text('Перейти'),
+            child: const Text('Перейти'),
           ),
           const Spacer(),
         ],
