@@ -24,12 +24,10 @@ class SimpleLogger implements Logger {
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
 
-  if (!Platform.isIOS) {
-    VKBridge.instance.setLogger(SimpleLogger());
-    VKBridge.instance.init().then((value) {
-      print('vkBridge initialized? $value');
-    });
-  }
+  VKBridge.instance.setLogger(SimpleLogger());
+  VKBridge.instance.init().then((value) {
+    print('vkBridge initialized? $value');
+  });
 
   runApp(const App());
 }
