@@ -41,7 +41,7 @@ class App extends StatelessWidget {
         ),
         fontFamily: 'Open-Sans',
       ),
-      initialRoute: '/',
+      initialRoute: '/match',
       routes: {
         '/': (context) => const SplashScreen(),
         '/profile': (context) => const ProfileScreen(),
