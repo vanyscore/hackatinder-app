@@ -1,4 +1,5 @@
 import 'package:fl_app/app_colors.dart';
+import 'package:fl_app/events_screen.dart';
 import 'package:fl_app/profile_screen.dart';
 import 'package:fl_app/splash_screen.dart';
 import 'package:flutter/material.dart';
@@ -39,10 +40,11 @@ class App extends StatelessWidget {
         ),
         fontFamily: 'Open-Sans',
       ),
-      initialRoute: '/',
+      initialRoute: '/events',
       routes: {
         '/': (context) => const SplashScreen(),
-        '/profile': (context) => const ProfileScreen()
+        '/profile': (context) => const ProfileScreen(),
+        '/events': (context) => EventsScreen(),
       },
     );
   }
