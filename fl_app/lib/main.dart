@@ -25,10 +25,10 @@ class SimpleLogger implements Logger {
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
 
-  // VKBridge.instance.setLogger(SimpleLogger());
-  // VKBridge.instance.init().then((value) {
-  //   print('vkBridge initialized? $value');
-  // });
+  VKBridge.instance.setLogger(SimpleLogger());
+  VKBridge.instance.init().then((value) {
+    print('vkBridge initialized? $value');
+  });
 
   runApp(App());
 }
@@ -37,7 +37,7 @@ class App extends StatelessWidget {
   App({super.key});
 
   final dio = Dio(
-    BaseOptions(baseUrl: 'http://10.11.167.53:8000'),
+    BaseOptions(baseUrl: 'https://10.11.167.53'),
   )..interceptors.add(LogInterceptor());
 
   @override
@@ -61,10 +61,15 @@ class App extends StatelessWidget {
           initialRoute: '/',
           routes: {
             '/': (context) => const SplashScreen(),
-            '/profile': (context) => const ProfileScreen(),
+            '/profile': (context) => ProfileScreen(
+                  vkId: 1,
+                ),
             '/events': (context) => const EventsScreen(),
             '/match': (context) => const MatchScreen(),
             '/team': (context) => const TeamControlScreen(),
+          },
+          onGenerateRoute: (settings) {
+            return null;
           },
         ),
       ),

@@ -23,5 +23,18 @@ class UserRepo {
     return [];
   }
 
+  Future<UserModel?> getUser(int vkId) async {
+    try {
+      final resp = await dio.get('/users/$vkId');
+      final user = UserModel.fromJson(resp.data);
+
+      return user;
+    } catch (ex, st) {
+      print('$ex$st');
+    }
+
+    return null;
+  }
+
   // Future<UserModel> getUser(int vkId) async {}
 }

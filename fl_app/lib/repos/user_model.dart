@@ -5,6 +5,8 @@ class UserModel {
   final String photoUrl;
   final List<String> skills;
 
+  String get fullName => '$name $lastname';
+
   const UserModel({
     required this.name,
     required this.lastname,
