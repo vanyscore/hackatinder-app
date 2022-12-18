@@ -39,6 +39,7 @@ dependencies:
   vk_bridge: ^2.4.0
   swipable_stack: ^2.0.0
   dio: ^4.0.6
+  provider: ^6.0.5
 
 dev_dependencies:
   flutter_test:

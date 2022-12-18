@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:fl_app/styles/app_colors.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class Event {
   final String title;
@@ -42,16 +43,15 @@ class EventsScreenState extends State<EventsScreen> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    Dio().get('http://10.11.167.53:8000/events/').then(
-      (res) {
-        List<dynamic> list = res.data;
-        final arr = list.map((e) => Event.fromJson(e)).toList();
-        setState(() {
-          events = arr;
-        });
-      },
-    ).catchError((err) {
-      print(err);
+
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
+      final dio = Provider.of<Dio>(context, listen: false);
+      final res = await dio.get('/events');
+      List<dynamic> list = res.data;
+      final arr = list.map((e) => Event.fromJson(e)).toList();
+      setState(() {
+        events = arr;
+      });
     });
   }
 

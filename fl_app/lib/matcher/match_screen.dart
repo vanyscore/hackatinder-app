@@ -1,6 +1,8 @@
 import 'package:fl_app/matcher/match_card.dart';
 import 'package:fl_app/matcher/match_model.dart';
+import 'package:fl_app/repos/user_repo.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:swipable_stack/swipable_stack.dart';
 
 class MatchScreen extends StatefulWidget {
@@ -13,54 +15,37 @@ class MatchScreen extends StatefulWidget {
 class _MatchScreenState extends State<MatchScreen> {
   // late final SwipableStackController _controller;
 
-  final _matchList = [
-    MatchModel(
-      imageUrl:
-          'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8cmFuZG9tJTIwcGVvcGxlfGVufDB8fDB8fA%3D%3D&auto=format&fit=crop&w=800&q=60',
-      name: 'Вася Пупкин',
-      description:
-          'Супер кодер. Ебашу джаваскрипт. Ну и просто ебашу. Болею за Хасбика. Антихайп!',
-      tags: ['JS', 'React', 'Frontend'],
-    ),
-    MatchModel(
-      imageUrl:
-          'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8cmFuZG9tJTIwcGVvcGxlfGVufDB8fDB8fA%3D%3D&auto=format&fit=crop&w=800&q=60',
-      name: 'Вася Пупкин',
-      description:
-          'Супер кодер. Ебашу джаваскрипт. Ну и просто ебашу. Болею за Хасбика. Антихайп!',
-      tags: ['JS', 'React', 'Frontend'],
-    ),
-    MatchModel(
-      imageUrl:
-          'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8M3x8cmFuZG9tJTIwcGVvcGxlfGVufDB8fDB8fA%3D%3D&auto=format&fit=crop&w=800&q=60',
-      name: 'Вася Пупкин',
-      description:
-          'Супер кодер. Ебашу джаваскрипт. Ну и просто ебашу. Болею за Хасбика. Антихайп!',
-      tags: ['JS', 'React', 'Frontend'],
-    ),
-    MatchModel(
-      imageUrl:
-          'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8NHx8cmFuZG9tJTIwcGVvcGxlfGVufDB8fDB8fA%3D%3D&auto=format&fit=crop&w=800&q=60',
-      name: 'Вася Пупкин',
-      description:
-          'Супер кодер. Ебашу джаваскрипт. Ну и просто ебашу. Болею за Хасбика. Антихайп!',
-      tags: ['JS', 'React', 'Frontend'],
-    ),
-    MatchModel(
-      imageUrl:
-          'https://images.unsplash.com/photo-1530268729831-4b0b9e170218?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8OHx8cmFuZG9tJTIwcGVvcGxlfGVufDB8fDB8fA%3D%3D&auto=format&fit=crop&w=800&q=60',
-      name: 'Вася Пупкин',
-      description:
-          'Супер кодер. Ебашу джаваскрипт. Ну и просто ебашу. Болею за Хасбика. Антихайп!',
-      tags: ['JS', 'React', 'Frontend'],
-    ),
-  ];
-
-  void _listenController() => setState(() {});
+  bool _isLoading = true;
+  final List<MatchModel> _matchList = [];
 
   @override
   void initState() {
     super.initState();
+
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
+      final repo = Provider.of<UserRepo>(
+        context,
+        listen: false,
+      );
+
+      final users = await repo.getUsers();
+
+      if (users.isNotEmpty) {
+        setState(() {
+          _matchList.addAll(
+            users.map(
+              (e) => MatchModel(
+                imageUrl: e.photoUrl,
+                name: e.name,
+                tags: e.skills,
+              ),
+            ),
+          );
+          _isLoading = false;
+        });
+      }
+    });
+
     // _controller = SwipableStackController()..addListener(_listenController);
   }
 
@@ -85,27 +70,52 @@ class _MatchScreenState extends State<MatchScreen> {
             Positioned.fill(
               child: Padding(
                 padding: const EdgeInsets.all(8),
-                child: SwipableStack(
-                  itemCount: _matchList.length,
-                  detectableSwipeDirections: const {
-                    SwipeDirection.right,
-                    SwipeDirection.left,
-                  },
-                  stackClipBehaviour: Clip.none,
-                  onSwipeCompleted: (index, direction) {
-                    print('$index, $direction');
-                  },
-                  horizontalSwipeThreshold: 0.8,
-                  verticalSwipeThreshold: 0.8,
-                  builder: (context, properties) {
-                    return MatchCard(model: _matchList[properties.index]);
-                  },
-                ),
+                child: _isLoading
+                    ? _buildLoading()
+                    : _matchList.isEmpty
+                        ? _buildEmpty()
+                        : _buildStack(),
               ),
             ),
           ],
         ),
       ),
+    );
+  }
+
+  Widget _buildLoading() {
+    return const Center(
+      child: CircularProgressIndicator(),
+    );
+  }
+
+  Widget _buildEmpty() {
+    return const Center(
+      child: Text(
+        'Вы просмотрели всех участников.',
+        style: TextStyle(
+          fontSize: 18,
+        ),
+      ),
+    );
+  }
+
+  Widget _buildStack() {
+    return SwipableStack(
+      itemCount: _matchList.length,
+      detectableSwipeDirections: const {
+        SwipeDirection.right,
+        SwipeDirection.left,
+      },
+      stackClipBehaviour: Clip.none,
+      onSwipeCompleted: (index, direction) {
+        print('$index, $direction');
+      },
+      horizontalSwipeThreshold: 0.8,
+      verticalSwipeThreshold: 0.8,
+      builder: (context, properties) {
+        return MatchCard(model: _matchList[properties.index]);
+      },
     );
   }
 }

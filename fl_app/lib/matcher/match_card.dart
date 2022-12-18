@@ -38,13 +38,13 @@ class MatchCard extends StatelessWidget {
               const SizedBox(
                 height: 20,
               ),
-              Text(
+              /* Text(
                 model.description,
                 style: textStyle,
               ),
               const SizedBox(
                 height: 20,
-              ),
+              ),*/
               SizedBox(
                 width: double.infinity,
                 child: Wrap(
