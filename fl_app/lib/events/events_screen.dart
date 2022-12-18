@@ -50,7 +50,7 @@ class EventsScreenState extends State<EventsScreen> {
 
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
       final dio = Provider.of<Dio>(context, listen: false);
-      final res = await dio.get('/events');
+      final res = await dio.get('/events/');
 
       // final profileInfo = await VKBridge.instance.getUserInfo();
 
