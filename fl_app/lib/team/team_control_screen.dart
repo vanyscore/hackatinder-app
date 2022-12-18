@@ -1,3 +1,6 @@
+import 'package:fl_app/matcher/match_model.dart';
+import 'package:fl_app/profile/profile_screen.dart';
+import 'package:fl_app/repos/user_model.dart';
 import 'package:fl_app/team/models/team_user.dart';
 import 'package:fl_app/widgets/my_button.dart';
 import 'package:flutter/material.dart';
@@ -12,29 +15,11 @@ class TeamControlScreen extends StatefulWidget {
 }
 
 class _TeamControlScreenState extends State<TeamControlScreen> {
-  final List<TeamUser> _users = [];
+  final List<UserModel> _users = [];
 
   @override
   void initState() {
     super.initState();
-
-    // _users.addAll([
-    //   const TeamUser(
-    //     imageUrl:
-    //         'https://icdn.lenta.ru/images/2021/06/03/14/20210603141543555/square_320_e69d8d78f5a03c281c39be35b26108fc.jpg',
-    //     name: 'Хасбулад Ибрагимов',
-    //   ),
-    //   const TeamUser(
-    //     imageUrl:
-    //         'https://orenburg.media/wp-content/uploads/2021/04/9yg-T5yIqOw.jpg',
-    //     name: 'Абдуросик Вартанов',
-    //   ),
-    //   const TeamUser(
-    //     imageUrl:
-    //         'https://upload.wikimedia.org/wikipedia/commons/thumb/4/4d/Conor_McGregor_2018.jpg/270px-Conor_McGregor_2018.jpg',
-    //     name: 'Конор Мурмагомедов',
-    //   ),
-    // ]);
   }
 
   @override
@@ -77,9 +62,25 @@ class _TeamControlScreenState extends State<TeamControlScreen> {
                   padding: const EdgeInsets.symmetric(horizontal: 20),
                   sliver: SliverToBoxAdapter(
                     child: MyButton(
-                      text: 'Поиск участников', 
-                      onClick: () {
-                        Navigator.of(context).pushNamed('/match');
+                      text: 'Поиск участников',
+                      onClick: () async {
+                        final matched =
+                            await Navigator.of(context).pushNamed('/match');
+
+                        if (matched != null) {
+                          final users = matched as List<UserModel>;
+
+                          print('matched count: ${users.length}');
+
+                          if (users.isNotEmpty) {
+                            setState(() {
+                              _users.clear();
+                              _users.addAll(
+                                users,
+                              );
+                            });
+                          }
+                        }
                       },
                     ),
                   ),
@@ -109,11 +110,15 @@ class _TeamControlScreenState extends State<TeamControlScreen> {
           childCount: _users.length,
           (context, index) => ListTile(
             onTap: () {
-              Navigator.of(context).pushNamed('/profile');
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) => ProfileScreen(vkId: _users[index].vkId),
+                ),
+              );
             },
             leading: CircleAvatar(
               radius: 20,
-              foregroundImage: NetworkImage(_users[index].imageUrl),
+              foregroundImage: NetworkImage(_users[index].photoUrl),
             ),
             title: Text(_users[index].name),
           ),

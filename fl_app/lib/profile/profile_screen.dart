@@ -34,8 +34,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   void _initProfileInfo() async {
     final repo = Provider.of<UserRepo>(context, listen: false);
-    final vkId = (await VKBridge.instance.getUserInfo()).id;
-    final user = await repo.getUser(vkId);
+    final user = await repo.getUser(widget.vkId);
 
     if (user != null) {
       setState(() {

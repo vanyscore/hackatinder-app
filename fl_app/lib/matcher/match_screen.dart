@@ -1,5 +1,6 @@
 import 'package:fl_app/matcher/match_card.dart';
 import 'package:fl_app/matcher/match_model.dart';
+import 'package:fl_app/repos/user_model.dart';
 import 'package:fl_app/repos/user_repo.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -13,10 +14,11 @@ class MatchScreen extends StatefulWidget {
 }
 
 class _MatchScreenState extends State<MatchScreen> {
-  // late final SwipableStackController _controller;
+  late final SwipableStackController _controller;
 
   bool _isLoading = true;
-  final List<MatchModel> _matchList = [];
+  final List<UserModel> _matchList = [];
+  final List<UserModel> _matched = [];
 
   @override
   void initState() {
@@ -33,28 +35,21 @@ class _MatchScreenState extends State<MatchScreen> {
       if (users.isNotEmpty) {
         setState(() {
           _matchList.addAll(
-            users.map(
-              (e) => MatchModel(
-                imageUrl: e.photoUrl,
-                name: e.name,
-                tags: e.skills,
-              ),
-            ),
+            users,
           );
           _isLoading = false;
         });
       }
     });
 
-    // _controller = SwipableStackController()..addListener(_listenController);
+    _controller = SwipableStackController();
   }
 
   @override
   void dispose() {
     super.dispose();
-    // _controller
-    //   ..removeListener(_listenController)
-    //   ..dispose();
+
+    _controller.dispose();
   }
 
   @override
@@ -62,6 +57,13 @@ class _MatchScreenState extends State<MatchScreen> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('BasicExample'),
+        automaticallyImplyLeading: false,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () {
+            Navigator.of(context).pop(_matched);
+          },
+        ),
       ),
       body: SafeArea(
         top: false,
@@ -103,18 +105,29 @@ class _MatchScreenState extends State<MatchScreen> {
   Widget _buildStack() {
     return SwipableStack(
       itemCount: _matchList.length,
+      controller: _controller,
       detectableSwipeDirections: const {
         SwipeDirection.right,
         SwipeDirection.left,
       },
       stackClipBehaviour: Clip.none,
       onSwipeCompleted: (index, direction) {
-        print('$index, $direction');
+        if (direction == SwipeDirection.right) {
+          _matched.add(_matchList[index]);
+        }
       },
       horizontalSwipeThreshold: 0.8,
       verticalSwipeThreshold: 0.8,
       builder: (context, properties) {
-        return MatchCard(model: _matchList[properties.index]);
+        return MatchCard(
+          model: _matchList[properties.index],
+          onCancel: () {
+            _controller.next(swipeDirection: SwipeDirection.left);
+          },
+          onAccept: () {
+            _controller.next(swipeDirection: SwipeDirection.right);
+          },
+        );
       },
     );
   }

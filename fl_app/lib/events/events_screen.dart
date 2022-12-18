@@ -1,7 +1,10 @@
 import 'package:dio/dio.dart';
+import 'package:fl_app/common/links.dart';
+import 'package:fl_app/profile/profile_screen.dart';
 import 'package:fl_app/styles/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:vk_bridge/vk_bridge.dart';
 
 class Event {
   final String title;
@@ -37,7 +40,8 @@ class EventsScreen extends StatefulWidget {
 }
 
 class EventsScreenState extends State<EventsScreen> {
-  List<Event> events = [];
+  List<Event> _events = [];
+  String? _imageUrl;
 
   @override
   void initState() {
@@ -47,10 +51,14 @@ class EventsScreenState extends State<EventsScreen> {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
       final dio = Provider.of<Dio>(context, listen: false);
       final res = await dio.get('/events');
+
+      // final profileInfo = await VKBridge.instance.getUserInfo();
+
       List<dynamic> list = res.data;
       final arr = list.map((e) => Event.fromJson(e)).toList();
       setState(() {
-        events = arr;
+        _events = arr;
+        // _imageUrl = profileInfo.photo200;
       });
     });
   }
@@ -74,9 +82,22 @@ class EventsScreenState extends State<EventsScreen> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             MaterialButton(
-              onPressed: () => {Navigator.of(context).pushNamed('/profile')},
-              child: const CircleAvatar(
-                backgroundImage: NetworkImage('https://picsum.photos/400/200'),
+              onPressed: () async {
+                try {
+                  final vkId = (await VKBridge.instance.getUserInfo()).id;
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) => ProfileScreen(vkId: vkId),
+                    ),
+                  );
+                } catch (ex, st) {
+                  print('$ex$st');
+                }
+              },
+              child: CircleAvatar(
+                backgroundImage: NetworkImage(
+                  _imageUrl ?? AppLinks.placeholderImage,
+                ),
                 radius: 20,
               ),
             ),
@@ -88,7 +109,7 @@ class EventsScreenState extends State<EventsScreen> {
       body: Container(
         padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 16),
         child: ListView(
-          children: events
+          children: _events
               .map(
                 (e) =>
                     EventCard(name: e.title, date: e.date, imgUrl: e.photoUrl),

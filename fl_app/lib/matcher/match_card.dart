@@ -1,19 +1,24 @@
 import 'package:fl_app/matcher/match_model.dart';
+import 'package:fl_app/repos/user_model.dart';
 import 'package:fl_app/widgets/circle_button.dart';
 import 'package:fl_app/widgets/tag.dart';
 import 'package:flutter/material.dart';
 
 class MatchCard extends StatelessWidget {
-  final MatchModel model;
+  final UserModel model;
   final TextStyle textStyle = const TextStyle(
     color: Colors.white,
     fontSize: 24,
     fontWeight: FontWeight.w500,
   );
+  final VoidCallback onCancel;
+  final VoidCallback onAccept;
 
   const MatchCard({
     super.key,
     required this.model,
+    required this.onCancel,
+    required this.onAccept,
   });
 
   @override
@@ -22,7 +27,7 @@ class MatchCard extends StatelessWidget {
       fit: StackFit.expand,
       children: [
         Image.network(
-          model.imageUrl,
+          model.photoUrl,
           fit: BoxFit.cover,
         ),
         Padding(
@@ -50,7 +55,7 @@ class MatchCard extends StatelessWidget {
                 child: Wrap(
                   runSpacing: 8,
                   spacing: 8,
-                  children: model.tags
+                  children: model.skills
                       .map(
                         (e) => Tag(
                           name: e,
@@ -69,7 +74,7 @@ class MatchCard extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   CircleButton(
-                    onPressed: () {},
+                    onPressed: onCancel,
                     color: Colors.red,
                     icon: const Icon(
                       size: 40,
@@ -78,7 +83,7 @@ class MatchCard extends StatelessWidget {
                     ),
                   ),
                   CircleButton(
-                    onPressed: () {},
+                    onPressed: onAccept,
                     color: Colors.lightGreenAccent,
                     icon: const Icon(
                       Icons.add,
